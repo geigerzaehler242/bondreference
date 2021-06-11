@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		ED7F968F26739D2100AA3A5B /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED7F968E26739D2100AA3A5B /* main.cpp */; };
+		ED7F969726739F4D00AA3A5B /* Bond.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED7F969526739F4D00AA3A5B /* Bond.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +26,8 @@
 /* Begin PBXFileReference section */
 		ED7F968B26739D2100AA3A5B /* sde-test-solution */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "sde-test-solution"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED7F968E26739D2100AA3A5B /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		ED7F969526739F4D00AA3A5B /* Bond.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Bond.cpp; sourceTree = "<group>"; };
+		ED7F969626739F4D00AA3A5B /* Bond.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Bond.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +45,8 @@
 			isa = PBXGroup;
 			children = (
 				ED7F968E26739D2100AA3A5B /* main.cpp */,
+				ED7F969526739F4D00AA3A5B /* Bond.cpp */,
+				ED7F969626739F4D00AA3A5B /* Bond.hpp */,
 				ED7F968D26739D2100AA3A5B /* sde-test-solution */,
 				ED7F968C26739D2100AA3A5B /* Products */,
 			);
@@ -118,6 +123,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ED7F969726739F4D00AA3A5B /* Bond.cpp in Sources */,
 				ED7F968F26739D2100AA3A5B /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
