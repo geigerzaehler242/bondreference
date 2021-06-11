@@ -1,0 +1,32 @@
+{
+    "data": [
+        {
+            "amount_outstanding": 1200000,
+            "id": "c1",
+            "tenor": "10.3 years",
+            "type": "corporate",
+            "yield": "5.30%"
+        },
+        {
+            "amount_outstanding": 2500000,
+            "id": "g1",
+            "tenor": "9.4 years",
+            "type": "government",
+            "yield": "3.70%"
+        },
+        {
+            "amount_outstanding": 1100000,
+            "id": "c2",
+            "tenor": "13.5 years",
+            "type": "corporate",
+            "yield": null
+        },
+        {
+            "amount_outstanding": 1750000,
+            "id": "g2",
+            "tenor": "12.0 years",
+            "type": "government",
+            "yield": "4.80%"
+        }
+    ]
+}
