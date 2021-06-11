@@ -29,7 +29,23 @@ void parseBondInputData(std::string inputFile, std::vector<Bond> &vCorp, std::ve
            && bond["yield"] != nullptr
            && bond["amount_outstanding"] != nullptr) {
             
-            Bond corpBond = Bond(bond["id"], bond["type"], bond["tenor"], bond["yield"], bond["amount_outstanding"]);
+            std::string yield = bond["yield"];
+            yield.erase(remove(yield.begin(), yield.end(), '%'), yield.end()); //remove %
+            
+            double yieldDouble = stod(yield);
+            
+            
+            std::string tenor = bond["tenor"];
+            
+            std::string toErase = " years";
+            size_t pos = tenor.find(toErase);
+            if (pos != std::string::npos)
+            {
+                tenor.erase(pos, toErase.length()); // If found then erase it from string
+            }
+            double tenorDouble = stod(tenor);
+            
+            Bond corpBond = Bond(bond["id"], bond["type"], tenorDouble, yieldDouble, bond["amount_outstanding"]);
             
             vCorp.push_back(corpBond);
         }
@@ -40,7 +56,23 @@ void parseBondInputData(std::string inputFile, std::vector<Bond> &vCorp, std::ve
             && bond["amount_outstanding"] != nullptr) {
             
             
-            Bond govBond = Bond(bond["id"], bond["type"], bond["tenor"], bond["yield"], bond["amount_outstanding"]);
+            std::string yield = bond["yield"];
+            yield.erase(remove(yield.begin(), yield.end(), '%'), yield.end()); //remove %
+            
+            double yieldDouble = stod(yield);
+            
+            
+            std::string tenor = bond["tenor"];
+            
+            std::string toErase = " years";
+            size_t pos = tenor.find(toErase);
+            if (pos != std::string::npos)
+            {
+                tenor.erase(pos, toErase.length()); // If found then erase it from string
+            }
+            double tenorDouble = stod(tenor);
+            
+            Bond govBond = Bond(bond["id"], bond["type"], tenorDouble, yieldDouble, bond["amount_outstanding"]);
             
             vGov.push_back(govBond);
         }
@@ -76,6 +108,10 @@ int main(int argc, const char * argv[]) {
     std::vector<Bond> vGov;
     
     parseBondInputData(inputFile, vCorp, vGov);
+    
+    std::sort(vGov.begin(), vGov.end(), std::less<Bond>()); //sort government bonds by increasing term
+    std::sort(vCorp.begin(), vCorp.end(), std::less<Bond>()); //sort corporate bonds by increasing term
+    
     
     // write prettified JSON to another file
 //    std::ofstream o(outputFile);

@@ -18,7 +18,7 @@ class Bond {
 public:
 
     
-    Bond(std::string id, std::string type, std::string tenor, std::string yield, double amount_outstanding);
+    Bond(std::string id, std::string type, double tenor, double yield, double amount_outstanding);
     
     Bond();
     
@@ -28,9 +28,9 @@ public:
     
     std::string getBondType() const;
     
-    std::string getBondTenor() const;
+    double getBondTenor() const;
     
-    std::string getBondYield() const;
+    double getBondYield() const;
     
     double getBondAmountOutstanding() const;
     
@@ -49,8 +49,8 @@ private:
 
     std::string id;
     std::string type;
-    std::string tenor;
-    std::string yield;
+    double tenor;
+    double yield;
     double amount_outstanding;
     
 }; //Bond
