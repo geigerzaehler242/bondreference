@@ -9,6 +9,7 @@
 #include <fstream>
 #include "Bond.hpp" //#include <iostream>
 
+//#include <nlohmann/json.hpp>
 #include "/usr/local/opt/nlohmann_json/include/nlohmann/json.hpp"
 
 struct BondBenchmarkSpread {
@@ -141,6 +142,47 @@ void findBenchmarkSpread(const std::vector<Bond> &vCorp, const std::vector<Bond>
     std::cout << std::endl;
 }
 
+void testParseData(std::string inputFile) {
+    
+    
+    std::vector<Bond> vCorp;
+    std::vector<Bond> vGov;
+    
+    parseBondInputData(inputFile, vCorp, vGov);
+    
+    if(vCorp.size() == 1 && vGov.size() == 2) {
+        std::cout << "parseBondInputData test PASSED" << std::endl;
+    }
+    else {
+        std::cout << "parseBondInputData test FAILED" << std::endl;
+    }
+    
+}
+
+
+void testBenchmarkSpread(std::string inputFile) {
+    
+    std::vector<Bond> vCorp;
+    std::vector<Bond> vGov;
+    
+    parseBondInputData(inputFile, vCorp, vGov);
+    
+    std::vector<BondBenchmarkSpread> benchmarkSpreadVector;
+    
+    findBenchmarkSpread(vCorp, vGov, benchmarkSpreadVector);
+    
+    std::string corpIDtest = benchmarkSpreadVector[0].corporateBond;
+    std::string govIDtest = benchmarkSpreadVector[0].governmentBond;
+    std::string spreadtest = benchmarkSpreadVector[0].spread;
+    
+    if(corpIDtest == "c1" && govIDtest == "g1" && spreadtest == "159 bps") {
+        std::cout << "findBenchmarkSpread test PASSED" << std::endl;
+    }
+    else {
+        std::cout << "findBenchmarkSpread test FAILED" << std::endl;
+    }
+    
+}
 
 int main(int argc, const char * argv[]) {
     
@@ -149,6 +191,9 @@ int main(int argc, const char * argv[]) {
     
     std::string inputFile;
     std::string outputFile;
+    
+    
+    
     
     if(argc == 3) {
         inputFile = argv[1];
@@ -159,6 +204,11 @@ int main(int argc, const char * argv[]) {
         inputFile = "/Users/fernando/Developer/sde-test/sample_input.json";
         outputFile = "/Users/fernando/Developer/sde-test/output.json";
     }
+    
+    inputFile = "/Users/fernando/Developer/sde-test/sample_input.json";
+    testParseData(inputFile);
+    testBenchmarkSpread(inputFile);
+    
     
     std::vector<Bond> vCorp;
     std::vector<Bond> vGov;
@@ -205,7 +255,7 @@ int main(int argc, const char * argv[]) {
     std::ofstream o(outputFile);
     o << std::setw(4) << outputJson << std::endl;
     
-    
+    std::cout << "completed successfully" << std::endl;
     
     return 0;
 }

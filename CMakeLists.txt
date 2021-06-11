@@ -3,4 +3,4 @@ project(overbond)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(sde-test-solution main.cpp bond.cpp)
+add_executable(sde-test-solution main.cpp Bond.cpp)
