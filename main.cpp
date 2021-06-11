@@ -167,6 +167,7 @@ int main(int argc, const char * argv[]) {
     
     if(vCorp.size() && vGov.size() == 0) {
         std::cout << "cannot find any corp or gov bonds in input file" << std::endl;
+        return 0;
     }
     
     std::sort(vGov.begin(), vGov.end(), std::less<Bond>()); //sort government bonds by increasing term
@@ -177,10 +178,32 @@ int main(int argc, const char * argv[]) {
     std::vector<BondBenchmarkSpread> benchmarkSpreadVector;
     findBenchmarkSpread(vCorp, vGov, benchmarkSpreadVector);
     
+    if(benchmarkSpreadVector.size() == 0) {
+        std::cout << "cannot find any benchmark bonds" << std::endl;
+        return 0;
+    }
     
-    // write prettified JSON to another file
-//    std::ofstream o(outputFile);
-//    o << std::setw(4) << inputJson << std::endl;
+    nlohmann::json outputJson;
+    
+    nlohmann::json j;
+    nlohmann::json jsonArray = nlohmann::json::array();
+    
+    
+    for(auto bondSpread : benchmarkSpreadVector) {
+        
+        j = { {"corporate_bond_id", bondSpread.corporateBond}, {"government_bond_id", bondSpread.governmentBond}, {"spread_to_benchmark", bondSpread.spread} };
+        
+        jsonArray.push_back(j);
+        
+    }
+    
+    outputJson["data"] = jsonArray;
+    
+    std::cout << outputJson["data"];
+    
+    // write JSON to another file
+    std::ofstream o(outputFile);
+    o << std::setw(4) << outputJson << std::endl;
     
     
     
