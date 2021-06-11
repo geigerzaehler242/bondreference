@@ -7,9 +7,17 @@
 
 //#include <iostream>
 #include <fstream>
-#include "bond.hpp" //#include <iostream>
+#include "Bond.hpp" //#include <iostream>
 
 #include "/usr/local/opt/nlohmann_json/include/nlohmann/json.hpp"
+
+struct BondBenchmarkSpread {
+    std::string corporateBond;
+    std::string governmentBond;
+    std::string spread;
+    
+    BondBenchmarkSpread(std::string corporateBond, std::string governmentBond, std::string spread) : corporateBond(corporateBond), governmentBond(governmentBond), spread(spread) {}
+};
 
 
 void parseBondInputData(std::string inputFile, std::vector<Bond> &vCorp, std::vector<Bond> &vGov) {
@@ -78,8 +86,59 @@ void parseBondInputData(std::string inputFile, std::vector<Bond> &vCorp, std::ve
         }
         
     }
+}
 
+
+void findBenchmarkSpread(const std::vector<Bond> &vCorp, const std::vector<Bond> &vGov, std::vector<BondBenchmarkSpread> &benchmarkVector) {
     
+    for (auto currentCorpBond : vCorp) {
+        
+        double corpYield = currentCorpBond.getBondYield();
+        double corpTerm = currentCorpBond.getBondTenor();
+        
+        double minYieldSpread = std::numeric_limits<double>::max();
+        double minTermSpread = std::numeric_limits<double>::max();
+        double maxAmountOutstanding = std::numeric_limits<double>::min();
+        Bond benchmarkBond = Bond();
+        
+        for (auto currentGovBond : vGov) {
+            
+            double govYield = currentGovBond.getBondYield();
+            double govTerm = currentGovBond.getBondTenor();
+            double govAmount = currentGovBond.getBondAmountOutstanding();
+            
+            double termDiff = std::abs(govTerm - corpTerm);
+            
+            if( termDiff <= minTermSpread) {
+                
+                if( govAmount > maxAmountOutstanding) {
+                    maxAmountOutstanding = govAmount;
+                    
+                    minTermSpread = termDiff;
+                    minYieldSpread = corpYield - govYield;
+                    
+                    benchmarkBond.setBondId(currentGovBond.getBondId());
+                    benchmarkBond.setBondType(currentGovBond.getBondType());
+                    benchmarkBond.setBondTerm(currentGovBond.getBondTenor());
+                    benchmarkBond.setBondYield(currentGovBond.getBondYield());
+                    benchmarkBond.setBondAmountOutstanding(currentGovBond.getBondAmountOutstanding());
+                    
+                }
+            }
+        }
+        
+        int basisPoints = trunc(minYieldSpread * 100);
+        
+        std::string bpsString =  std::to_string(basisPoints) + " bps";
+        
+        
+        BondBenchmarkSpread benchmarkSpread = BondBenchmarkSpread( currentCorpBond.getBondId(),
+            benchmarkBond.getBondId(), bpsString
+        );
+        
+        benchmarkVector.push_back(benchmarkSpread);
+    }
+    std::cout << std::endl;
 }
 
 
@@ -88,10 +147,8 @@ int main(int argc, const char * argv[]) {
     std::cout << std::endl;
     std::cout << "Overbond SDE Test \n";
     
-    
     std::string inputFile;
     std::string outputFile;
-    
     
     if(argc == 3) {
         inputFile = argv[1];
@@ -103,14 +160,22 @@ int main(int argc, const char * argv[]) {
         outputFile = "/Users/fernando/Developer/sde-test/output.json";
     }
     
-    
     std::vector<Bond> vCorp;
     std::vector<Bond> vGov;
     
     parseBondInputData(inputFile, vCorp, vGov);
     
+    if(vCorp.size() && vGov.size() == 0) {
+        std::cout << "cannot find any corp or gov bonds in input file" << std::endl;
+    }
+    
     std::sort(vGov.begin(), vGov.end(), std::less<Bond>()); //sort government bonds by increasing term
     std::sort(vCorp.begin(), vCorp.end(), std::less<Bond>()); //sort corporate bonds by increasing term
+    
+    
+    
+    std::vector<BondBenchmarkSpread> benchmarkSpreadVector;
+    findBenchmarkSpread(vCorp, vGov, benchmarkSpreadVector);
     
     
     // write prettified JSON to another file
