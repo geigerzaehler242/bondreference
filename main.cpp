@@ -9,8 +9,12 @@
 #include <fstream>
 #include "Bond.hpp" //#include <iostream>
 
-//#include <nlohmann/json.hpp>
-#include "/usr/local/opt/nlohmann_json/include/nlohmann/json.hpp"
+#include <iomanip>
+
+#include <nlohmann/json.hpp>
+//#include "json.hpp"
+//#include "json/include/nlohmann/json.hpp"
+//#include "/usr/local/opt/nlohmann_json/include/nlohmann/json.hpp"
 
 struct BondBenchmarkSpread {
     std::string corporateBond;
@@ -198,14 +202,16 @@ int main(int argc, const char * argv[]) {
     if(argc == 3) {
         inputFile = argv[1];
         outputFile = argv[2];
+        
+        std::cout << "found input and output file names" << std::endl;
     }
     else {
         std::cout << "input and output filenames are required!" << std::endl;
-        inputFile = "/Users/fernando/Developer/sde-test/sample_input.json";
-        outputFile = "/Users/fernando/Developer/sde-test/output.json";
+        //inputFile = "/Users/fernando/Developer/sde-test/sample_input.json";
+        //outputFile = "/Users/fernando/Developer/sde-test/output.json";
     }
     
-    inputFile = "/Users/fernando/Developer/sde-test/sample_input.json";
+    //inputFile = "/Users/fernando/Developer/sde-test/sample_input.json";
     testParseData(inputFile);
     testBenchmarkSpread(inputFile);
     
@@ -249,7 +255,9 @@ int main(int argc, const char * argv[]) {
     
     outputJson["data"] = jsonArray;
     
-    std::cout << outputJson["data"];
+    std::cout << "output json" << std::endl;
+    //std::cout << outputJson["data"];
+    std::cout << outputJson;
     
     // write JSON to another file
     std::ofstream o(outputFile);
