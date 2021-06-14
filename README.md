@@ -1,16 +1,17 @@
 # SDE Online Assessment
 
 
-i got it all working on my local mac but when i tried to get it running on docker i was unable to get the json library i imported to be findable in the main.
+this code satisfies the assignment requirements.
+
+the input and output json filenames can be set in the dockerfile.
+
+i created two tests to validate the parse function and benchmak function given the test data input.
 
 
-to test this you will need to run locally by not using docker and install via hombrew the json library
 
-brew tap nlohmann/json 
-brew install nlohmann-json
+to build and test the assignment via docker just execute the following two commands:
 
-## Submission
+docker build . -t sde-test-solution
+docker run sde-test-solution 
 
-Clone this repository and make commit the work to your own repo to share with us. If you decide to make the repo private, add @overbondeng as a collaborator, so that we can clone and view your solution.
 
-Alternatively, email us a zip file containing your entire solution.
